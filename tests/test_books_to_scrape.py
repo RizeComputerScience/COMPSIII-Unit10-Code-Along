@@ -1,6 +1,7 @@
 import os
 from books_to_scrape import *
 import pytest
+import sqlite3
 
 @pytest.fixture
 def db_connection():
@@ -53,8 +54,8 @@ def test_books_table_columns(db_connection):
         ('id', 'INTEGER', 1, None, 1),  # Primary key, autoincrement
         ('title', 'TEXT', 0, None, 0),
         ('price', 'REAL', 0, None, 0),
-        ('rating', 'INTEGER', 0, None, 0),
         ('availability', 'TEXT', 0, None, 0),
+        ('rating', 'INTEGER', 0, None, 0),
         ('genre', 'TEXT', 0, None, 0)
     ]
     
@@ -77,7 +78,7 @@ def test_scrape_books_data_added(db_connection):
     assert all(isinstance(row[0], int) for row in result), "ID should be an integer"
     assert all(isinstance(row[1], str) for row in result), "Title should be a string"
     assert all(isinstance(row[2], float) for row in result), "Price should be a float"
-    assert all(isinstance(row[3], int) for row in result), "Rating should be an integer"
-    assert all(isinstance(row[4], str) for row in result), "Availability should be a string"
+    assert all(isinstance(row[3], str) for row in result), "Availability should be a string"
+    assert all(isinstance(row[4], int) for row in result), "Rating should be an integer"
     assert all(isinstance(row[5], str) for row in result), "Genre should be a string"
     assert all(row[5] == "Fiction" for row in result), "Genre should be 'Fiction'"
